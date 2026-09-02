@@ -1,232 +1,174 @@
 # Wazuh SIEM/XDR Deployment & Integration (Ubuntu Manager & Windows Agent)
 
+---
+
 | Field | Value |
 | :--- | :--- |
-| **Author** | _Adrian Fajardo_ |
-| **Date** | _2 september 2026_ |
+| **Document ID** | WZH-2026-09-02-001 |
+| **Analyst / Author** | Adrián Steven Fajardo Liu |
+| **Date** | September 2, 2026 |
 | **Wazuh Version** | 4.12.0 |
 | **Document Type** | Deployment Guide / Lab Documentation |
 | **Environment** | Lab (Home Lab) |
 | **Status** | Completed |
 
-## Summary
-
-This repository documents the installation, configuration, and cryptographic pairing of a **Wazuh SIEM/XDR** platform in a lab environment. It covers the deployment of the central server on Ubuntu Linux and the enrollment of a Windows client endpoint for real-time security event monitoring.
+> **Document Note:** This report follows a SOC-standard documentation format (Metadata Table → Executive Summary → Architecture → Step-by-Step Execution → Control Alignment → Recommendations → References) optimized for direct rendering on GitHub.
 
 ---
 
-## 🏗️ Lab Architecture
+## 1. Executive Summary
 
-| Component | Operating System | IP Address | Network Role |
-| :--- | :--- | :--- | :--- |
-| Wazuh Manager / Dashboard / Indexer | Ubuntu Linux | `192.168.5.143` | Central SIEM Server |
-| Wazuh Agent | Windows Host | `192.168.5.74` | Monitored Endpoint (ID: 001) |
+This repository documents the end-to-end installation, configuration, and cryptographic pairing of a **Wazuh SIEM/XDR** platform in a dedicated security lab environment. The deployment covers the central management server on Ubuntu Linux and the enrollment of a Windows client endpoint for real-time security event telemetry, log collection, and threat detection. Each technical step is directly mapped to industry security frameworks, including **ISO/IEC 27001:2022**, **NIST SP 800-53**, and **CIS Controls v8**.
 
 ---
 
-## 🚀 Phase 1: Wazuh Manager Deployment & Configuration (Ubuntu)
+## 2. Lab Architecture
+
+| Component | Operating System | IP Address | Network Role | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Wazuh Manager / Dashboard / Indexer** | Ubuntu Linux | `192.168.5.143` | Central SIEM Server | Active |
+| **Wazuh Agent** | Windows Host | `192.168.5.74` | Monitored Endpoint (`ID: 001`) | Active |
+
+---
+
+## 3. Phase 1: Wazuh Manager Deployment & Configuration (Ubuntu)
 
 ### Step 1: Network Verification and Server IP Address
 
-**Procedure / Commands:**
-```bash
-ifconfig
-```
+* **Procedure / Commands:**
+  ```bash
+  ifconfig
 
-**Technical Explanation:** Identification of the active network interface (`wlp2s0`) and the assigned IP address (`192.168.5.143`). This IP is required to configure the Manager's listening ports for event ingestion (1514/1515 TCP/UDP) and access to the HTTPS Web console (443).
+Technical Explanation: Identification of active network interface (wlp2s0) and assigned IP (192.168.5.143). Configures listening ports for event ingestion (1514/1515 TCP/UDP) and Web HTTPS access (443).
 
-**Screenshot:**
-![Network Verification](img/01_ubuntu_network_configuration.png)
+Screenshot: ![Network Verification](img/01_ubuntu_network_configuration.png)
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.20 (Network security) · CIS Controls 4 (Secure configuration of enterprise assets)
+Control Alignment: ISO/IEC 27001:2022 A.8.20 (Network security) | CIS Controls 4 (Secure Configuration)
 
----
+Step 2: Importing the Wazuh Repository GPG Key
+Procedure / Commands:
+curl -s [https://packages.wazuh.com/key/GPG-KEY-WAZUH](https://packages.wazuh.com/key/GPG-KEY-WAZUH) | sudo gpg --dearmor -o /usr/share/keyrings/wazuh-archive-keyring.gpg
 
-### Step 2: Importing the Wazuh Repository GPG Key
+Technical Explanation: Cryptographic signature verification. The GPG key ensures binary authenticity and prevents supply-chain or MitM tampering during package installation.
 
-**Procedure / Commands:**
-```bash
-curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo gpg --dearmor -o /usr/share/keyrings/wazuh-archive-keyring.gpg
-```
+Screenshot: ![GPG Key Import](img/02_wazuh_gpg_key_import.png)
+|Control Alignment: ISO/IEC 27001:2022 A.8.24 (Cryptography) | NIST SP 800-53 SI-7 (Software Integrity)
 
-**Technical Explanation:** Cryptographic signature used to verify package integrity. The public GPG key ensures the installed binaries originate from Wazuh's official source and have not been tampered with in transit (prevention of supply-chain / MitM attacks).
+Step 3: Running the Automated Installation Wizard
+Procedure / Commands:
+curl -sO [https://packages.wazuh.com/4.12/wazuh-install.sh](https://packages.wazuh.com/4.12/wazuh-install.sh) && sudo bash ./wazuh-install.sh -a -i
 
-**Screenshot:**
-![GPG Key Import](img/02_wazuh_gpg_key_import.png)
+Step 4: Deployment Completion and Credential Generation
+Procedure: Review automatic setup summary displayed on terminal completion.
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.24 (Use of cryptography) · NIST SP 800-53 SI-7 (Software, firmware, and information integrity)
+Technical Explanation: Initialization confirmation. Generates web admin URL (https://192.168.5.143:443) and high-entropy default credentials for user admin.
 
----
+Screenshot: ![Installation Summary](img/04_wazuh_installation_summary_credentials.png)
 
-### Step 3: Running the Automated Installation Wizard
+Control Alignment: ISO/IEC 27001:2022 A.5.17 (Authentication Information) | NIST SP 800-53 IA-2 (User Authentication)
 
-**Procedure / Commands:**
-```bash
-curl -sO https://packages.wazuh.com/4.12/wazuh-install.sh && sudo bash ./wazuh-install.sh -a -i
-```
+Step 5: Authenticating to the Web Console (Wazuh Dashboard)
+Procedure: Navigate to https://192.168.5.143 in browser and authenticate.
 
-**Technical Explanation:** *All-in-One* deployment of the Wazuh architecture (v4.12.0). The script generates the local Certificate Authority (CA), inter-component TLS/SSL certificates (Indexer, Server, Dashboard, Filebeat), and configures indexed storage for security events.
+Technical Explanation: Central management interface sign-in. Enforces HTTPS/TLS encrypted communication over port 443 for administrative access.
 
-**Screenshot:**
-![Installer Execution](img/03_wazuh_installer_execution.png)
+Screenshot: ![Dashboard Login](img/05_wazuh_dashboard_login.png)
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.9 (Configuration management) · NIST SP 800-53 CM-2 (Baseline configuration)
+Control Alignment: ISO/IEC 27001:2022 A.8.26 (Application Security) | CIS Controls 6 (Access Control)
 
----
+Step 6: Verifying SIEM Status and Active Modules
+Procedure: Access main Overview dashboard post-authentication.
 
-### Step 4: Deployment Completion and Credential Generation
+Technical Explanation: Validates engine status prior to agent registration: Configuration Assessment, Malware Detection, File Integrity Monitoring (FIM), Threat Hunting, and compliance frameworks.
 
-**Procedure:** Automatic output displayed by the installer.
+Screenshot: ![Initial Dashboard State](img/06_wazuh_dashboard_overview.png)
 
-**Technical Explanation:** Confirmation that the ecosystem has initialized. The admin URL (`https://<wazuh-dashboard-ip>:443`) and a high-entropy random password for the default administrative user (`admin`) are generated.
+Control Alignment: ISO/IEC 27001:2022 A.8.16 (Monitoring Activities) | NIST SP 800-53 AU-6 (Audit Review)
 
-**Screenshot:**
-![Installation Summary](img/04_wazuh_installation_summary_credentials.png)
+Step 7: Manually Registering the Windows Agent on Manager (CLI)
+Procedure / Commands:
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.5.17 (Authentication information) · NIST SP 800-53 IA-2 (User authentication)
-
----
-
-### Step 5: Authenticating to the Web Console (Wazuh Dashboard)
-
-**Procedure:** Navigate to `https://192.168.5.143` and enter the session's administrative credentials.
-
-**Technical Explanation:** Sign-in to the centralized web interface. Communication is enforced over encrypted HTTPS/TLS (port 443) for secure SIEM/XDR management.
-
-**Screenshot:**
-![Dashboard Login](img/05_wazuh_dashboard_login.png)
-
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.26 (Application security requirements) · CIS Controls 6 (Access control management)
-
----
-
-### Step 6: Verifying SIEM Status and Active Modules
-
-**Procedure:** Navigate to the main *Overview* screen after authenticating.
-
-**Technical Explanation:** Initial platform state prior to agent enrollment. Confirms activation of the analysis engines: *Configuration Assessment*, *Malware Detection*, *File Integrity Monitoring (FIM)*, *Threat Hunting*, *Vulnerability Detection*, *MITRE ATT&CK*, and compliance frameworks (PCI DSS, GDPR, HIPAA, NIST 800-53).
-
-**Screenshot:**
-![Initial Dashboard State](img/06_wazuh_dashboard_overview.png)
-
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.16 (Monitoring activities) · NIST SP 800-53 AU-6 (Audit record review, analysis, and reporting)
-
----
-
-### Step 7: Manually Registering the Windows Agent on the Manager (CLI)
-
-**Procedure / Commands:**
-```bash
+Bash
 sudo /var/ossec/bin/manage_agents
-```
-- **Action:** `A` (Add an agent)
-- **Name:** `WindowsHost`
-- **IP Address:** `192.168.5.74`
-- **Confirm:** `y`
+Select A (Add agent) → Name: WindowsHost → IP: 192.168.5.74 → Confirm: y
 
-**Technical Explanation:** Registration of a new endpoint in the Manager's local database (`client.keys`). A unique 3-digit identifier is assigned (ID: 001) and the target host's IP address is explicitly bound to it to prevent impersonation attacks (IP spoofing).
+Technical Explanation: Enrolls endpoint into local database (client.keys). Binds IP address to agent ID: 001 to mitigate IP spoofing attacks.
 
-**Screenshot:**
-![CLI Agent Registration](img/07_wazuh_cli_add_agent.png)
+Screenshot: ![CLI Agent Registration](img/07_wazuh_cli_add_agent.png)
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.8 (Management of technical vulnerabilities / asset inventory) · CIS Controls 1 (Inventory and control of enterprise assets)
+Control Alignment: ISO/IEC 27001:2022 A.8.8 (Vulnerability & Asset Mgmt) | CIS Controls 1 (Asset Inventory)
 
----
+Step 8: Extracting the Cryptographic Authentication Key
+Procedure / Commands:
 
-### Step 8: Extracting the Cryptographic Authentication Key
-
-**Procedure / Commands:**
-```bash
+Bash
 sudo /var/ossec/bin/manage_agents
-```
-- **Action:** `E` (Extract key)
-- **Agent ID:** `001`
+Select E (Extract key) → Agent ID: 001
 
-**Technical Explanation:** Generation of a Base64-encoded token containing the pre-shared symmetric key (PSK). This key is required by the Windows agent to authenticate the communication channel and encrypt the logs and alerts sent to the central server.
+Technical Explanation: Exports Base64 pre-shared key (PSK). Enables mutual authentication and AES/Blowfish channel encryption between host and manager.
 
-**Screenshot:**
-![Key Extraction](img/08_wazuh_cli_extract_agent_key.png)
+Screenshot: ![Key Extraction](img/08_wazuh_cli_extract_agent_key.png)
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.24 (Cryptographic key management) · NIST SP 800-53 SC-12 (Cryptographic key establishment)
+Control Alignment: ISO/IEC 27001:2022 A.8.24 (Key Management) | NIST SP 800-53 SC-12 (Cryptographic Key Establishment)
 
----
+4. Phase 2: Wazuh Agent Deployment & Configuration (Windows)
+Step 9: Installing the Wazuh Agent on Windows
+Procedure: Run agent MSI installer, accept license terms (GPL v2), and execute installation.
 
-## 💻 Phase 2: Wazuh Agent Deployment & Configuration (Windows)
+Technical Explanation: Deploys wazuh-agent background service for collecting Windows Event Viewer logs (Security, System, Application) and kernel metrics.
 
-### Step 9: Installing the Wazuh Agent on Windows
+Screenshot: ![Windows Agent Installer](img/09_windows_agent_installer.png)
 
-**Procedure:** Run the Wazuh agent MSI installer, accept the software license terms (GNU General Public License v2), and select *Install*.
+Control Alignment: ISO/IEC 27001:2022 A.8.8 (Asset Management) | CIS Controls 10 (Malware Defenses)
 
-**Technical Explanation:** Deployment of the agent binaries as a background resident service (`wazuh-agent`). This component is responsible for collecting Windows Event Viewer logs (Security, System, Application), system metrics, and kernel events.
+Step 10: Opening Agent Interface and Initial State Verification
+Procedure: Launch Wazuh Agent GUI as Administrator.
 
-**Screenshot:**
-![Windows Agent Installer](img/09_windows_agent_installer.png)
+Technical Explanation: Verifies initial unpaired status (Auth key not imported, Service Not Running, default IP 0.0.0.0).
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.8 (Management of technical vulnerabilities / asset inventory) · CIS Controls 10 (Malware defenses)
+Screenshot: ![Initial Agent State](img/10_windows_agent_initial_state.png)
 
----
+Control Alignment: ISO/IEC 27001:2022 A.8.20 (Network Security)
 
-### Step 10: Opening the Agent Interface and Initial State
+Step 11: Configuring Wazuh Manager IP
+Procedure: Set Manager IP field to 192.168.5.143.
 
-**Procedure:** Open the agent management GUI (*Wazuh Agent GUI*) as administrator.
+Technical Explanation: Configures destination socket for heartbeat and encrypted event telemetry streaming over UDP/TCP 1514.
 
-**Technical Explanation:** Diagnostic of the initial, unpaired state. The interface confirms the authentication key has not been imported (*Auth key not imported*), the service is stopped (*Not Running*), and the default IP points to `0.0.0.0`.
+Screenshot: ![Manager IP Configuration](img/11_windows_agent_manager_ip_config.png)
 
-**Screenshot:**
-![Initial Agent State](img/10_windows_agent_initial_state.png)
+Control Alignment: ISO/IEC 27001:2022 A.8.20 (Network Security) | NIST SP 800-53 CA-3 (System Interconnections)
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.20 (Network security)
+Step 12: Importing Cryptographic Authentication Key
+Procedure: Paste Base64 key into Authentication key field, click Save, and accept confirmation dialog.
 
----
+Technical Explanation: Writes pre-shared secret to client.keys on endpoint, completing key exchange for Agent 001 (WindowsHost).
 
-### Step 11: Configuring the Wazuh Manager IP
+Screenshot: ![Key Import](img/12_windows_agent_key_import.png)
 
-**Procedure:** In the *Manager IP* field, enter the static IP address of the Ubuntu server where the Manager was installed (`192.168.5.143`).
+Control Alignment: ISO/IEC 27001:2022 A.8.24 (Key Management) | NIST SP 800-53 SC-12 (Cryptographic Key Establishment)
 
-**Technical Explanation:** Sets the telemetry traffic destination. Specifies the IP to which the agent will direct heartbeat packets and the encrypted event stream over UDP/TCP port 1514.
+Step 13: Confirming Active Agent & Telemetry Reception
+Procedure: Refresh Wazuh Dashboard Overview panel.
 
-**Screenshot:**
-![Manager IP Configuration](img/11_windows_agent_manager_ip_config.png)
+Technical Explanation: Confirms agent status as Active (1) and validates live ingestion of security audit events from Windows host.
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.20 (Network security) · NIST SP 800-53 CA-3 (Information exchange / system interconnections)
+Screenshot: ![Active Agent on Dashboard](img/13_wazuh_dashboard_agent_active.png)
 
----
+Control Alignment: ISO/IEC 27001:2022 A.8.16 (Monitoring Activities) | CIS Controls 8 (Audit Log Management)
 
-### Step 12: Importing the Cryptographic Authentication Key
+5. Next Steps & Recommendations
+Active Response Rules: Configure automated firewall blocks on Manager for brute-force attempts.
 
-**Procedure:** Paste the Base64 key extracted from the Manager into the *Authentication key* field, click *Save*, and confirm the pop-up dialog (*OK*).
+File Integrity Monitoring (FIM): Add critical Windows system paths (C:\Windows\System32\drivers\etc\hosts) to ossec.conf.
 
-**Technical Explanation:** Injects the shared secret into the target host's local `client.keys` file. The dialog confirms the binding for agent ID: `001`, Agent Name: `WindowsHost`, and IP Address: `192.168.5.74`. This enables the encrypted communication tunnel via AES/Blowfish.
+Post-Deployment Hardening: Rotate default admin credential, enforce MFA on Dashboard, and backup PKI CA keys.
 
-**Screenshot:**
-![Key Import](img/12_windows_agent_key_import.png)
+6. References
+Wazuh Documentation: https://documentation.wazuh.com
 
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.24 (Cryptographic key management) · NIST SP 800-53 SC-12 (Cryptographic key establishment)
+ISO/IEC 27001:2022: Information security, cybersecurity and privacy protection — Management systems requirements.
 
----
+NIST SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations.
 
-### Step 13: Confirming the Active Agent and Telemetry Reception
-
-**Procedure:** Access the central Wazuh Dashboard panel and refresh the main *Overview* view.
-
-**Technical Explanation:** Verification of successful end-to-end connectivity. The control panel shows *Active (1)* in the agents section and begins indexing the first medium-severity (Level 7-11) and low-severity (Level 0-6) alerts generated from Windows audit logs.
-
-**Screenshot:**
-![Active Agent on Dashboard](img/13_wazuh_dashboard_agent_active.png)
-
-> **PaC / Control Alignment:** ISO/IEC 27001:2022 A.8.16 (Monitoring activities) · CIS Controls 8 (Audit log management)
-
----
-
-## Suggested Next Steps
-
-- Configure custom detection rules and *Active Response* on the Manager.
-- Enable *File Integrity Monitoring (FIM)* on critical paths of the Windows agent.
-- Document post-deployment hardening (rotating the `admin` password, closing unused ports, backing up the CA).
-
-## References
-
-* Wazuh Official Documentation — [https://documentation.wazuh.com](https://documentation.wazuh.com)
-* ISO/IEC 27001:2022 — *Information security, cybersecurity and privacy protection — Information security management systems — Requirements.*
-* NIST SP 800-53 Rev. 5 — *Security and Privacy Controls for Information Systems and Organizations.*
-* CIS Controls v8 — Center for Internet Security.
+CIS Controls v8: Center for Internet Security Critical Security Controls.
