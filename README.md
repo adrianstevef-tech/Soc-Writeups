@@ -12,7 +12,7 @@ Welcome to my repository for incident analysis, threat triage, and cybersecurity
 | 📄 [**Phishing Sandbox Dynamic Analysis**](./Phishing-Sandbox-Dynamic-Analysis.md) | Dynamic analysis of suspicious attachments and links within an isolated environment (Sandbox). | Malware Analysis & Sandbox |
 | 📄 [Callback Phishing (TOAD) & Document Triage](SOC-Report-2026-08-20-Callback-Phishing-TOAD.md) | Analysis of TOAD callback campaign, SaaS infrastructure abuse, and static inspection of suspicious Word document. | Email Security & Threat Intelligence |
 | 📄 [Wazuh SIEM/XDR Deployment Lab](Wazuh-SIEM-XDR-Deployment-Lab.md) | End-to-end deployment of Wazuh Manager (Ubuntu) and Windows Agent, including cryptographic agent enrollment (PSK) and real-time telemetry monitoring. | SIEM Deployment & Detection Engineering |
-| 📄 [Amazon Brand Impersonation & Callback Phishing]([./SOC-Report-2026-08-28-Amazon-Brand-Impersonation-Callback-Phishing.md](https://github.com/adrianstevef-tech/Soc-Writeups/blob/main/SOC%20Incident%20Analysis%3A%20Amazon%20Brand%20Impersonation%20%26%20Callback%20Phishing%20Campaign.md)) | Forensic triage of a fake Amazon order confirmation using callback phishing (vishing) to lure victims into fraudulent support calls. Includes phone/VoIP OSINT and MITRE ATT&CK mapping. | Threat Intelligence & Vishing |
+| 📄 [Amazon Brand Impersonation & Callback Phishing](SOC-Incident-Analysis:Amazon-Brand-Impersonation-&-Callback-Phishing-Campaign.md). | Threat Intelligence & Vishing |
 
 ---
 
