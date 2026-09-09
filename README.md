@@ -11,7 +11,7 @@ Welcome to my repository for incident analysis, threat triage, and cybersecurity
 | 📄 [**Phishing OSINT Triage**](./Phishing-Osint-Triage.md) | Phishing email triage, IoC extraction, IP/Domain reputation checks, and OSINT investigation. | Threat Intelligence & OSINT |
 | 📄 [**Phishing Sandbox Dynamic Analysis**](./Phishing-Sandbox-Dynamic-Analysis.md) | Dynamic analysis of suspicious attachments and links within an isolated environment (Sandbox). | Malware Analysis & Sandbox |
 | 📄 [Callback Phishing (TOAD) & Document Triage](SOC-Report-2026-08-20-Callback-Phishing-TOAD.md) | Analysis of TOAD callback campaign, SaaS infrastructure abuse, and static inspection of suspicious Word document. | Email Security & Threat Intelligence |
-| 📄 [Wazuh SIEM/XDR Deployment Lab](./Wazuh-SIEM-XDR-Deployment-Lab-EN.md) | End-to-end deployment of Wazuh Manager (Ubuntu) and Windows Agent, including cryptographic agent enrollment (PSK) and real-time telemetry monitoring. | SIEM Deployment & Detection Engineering |
+| 📄 [Wazuh SIEM/XDR Deployment Lab](Wazuh-SIEM-XDR-Deployment-Lab.md) | End-to-end deployment of Wazuh Manager (Ubuntu) and Windows Agent, including cryptographic agent enrollment (PSK) and real-time telemetry monitoring. | SIEM Deployment & Detection Engineering |
 
 ---
 
