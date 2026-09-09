@@ -58,7 +58,7 @@ Rather than embedding malicious URLs, the threat actor utilized an unauthorized 
   * **Linguistic Anomalies:** The document contains grammatical errors typical of offshore scam templates (*"The transaction amount of $1199.99 USD is complete successfully"*, *"Give as call at:+1 (656) 556-5065"*).
   * **Callback Call-to-Action:** Prominently features two distinct support phone numbers (`+1 (656) 556-2958` and `+1 (656) 556-5065`).
 
-![Fake Amazon PDF Invoice](img/02_amazon_fake_invoice_pdf.png)
+![Fake Amazon PDF Invoice](https://github.com/adrianstevef-tech/Soc-Writeups/blob/849462db212ce987fcd678b2d3cc75d94d3e57e5/a49ce89f-ec5c-466e-bf05-bdd1987b1766.png)
 
 ---
 
