@@ -71,7 +71,7 @@ Rather than embedding malicious URLs, the threat actor utilized an unauthorized 
   * **Geographic Origin:** Florida, United States.
   * **Number Type:** Non-disposable VoIP line used to host automated interactive voice response (IVR) or call-center scams.
 
-![Phone Number Carrier OSINT](img/03_phone_number_osint_lookup.png)
+![Phone Number Carrier OSINT](https://github.com/adrianstevef-tech/Soc-Writeups/blob/main/1e1bf47d-35cf-4fec-a6b5-b4ab5638254f.png?raw=true)
 
 ---
 
@@ -80,7 +80,7 @@ Rather than embedding malicious URLs, the threat actor utilized an unauthorized 
 * **Procedure:** Evaluating email domain health, MX records, and DMARC/SPF policy alignment using MXToolbox.
 * **Analysis:** The domain health check identifies critical policy misconfigurations across public mail services, including missing `DMARC Quarantine/Reject` enforcement and rDNS banner mismatches. Threat actors exploit weak authentication policies on third-party relays to deliver impersonation lures into target inboxes.
 
-![Domain Health Assessment](img/04_domain_health_mxtoolbox.png)
+![Domain Health Assessment](https://github.com/adrianstevef-tech/Soc-Writeups/blob/main/c71c959f-d8a7-4240-a639-8107aaeee8c3.png?raw=true)
 
 ---
 
@@ -89,7 +89,7 @@ Rather than embedding malicious URLs, the threat actor utilized an unauthorized 
 * **Procedure:** Querying WHOIS registration data for the infrastructure used during the delivery chain.
 * **Analysis:** Verification confirms legitimate brand domain records vs. spoofed/compromised senders. The lookup validates registration dates, name servers, and abuse contact channels (`abusecomplaints@markmonitor.com`).
 
-![Domain WHOIS Lookup](img/05_whois_domain_lookup.png)
+![Domain WHOIS Lookup](https://github.com/adrianstevef-tech/Soc-Writeups/blob/main/7835e1b1-5c52-4604-8d36-0638709459bc.png?raw=true)
 
 ---
 
