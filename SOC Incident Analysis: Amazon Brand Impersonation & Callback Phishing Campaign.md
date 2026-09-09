@@ -46,7 +46,7 @@ Rather than embedding malicious URLs, the threat actor utilized an unauthorized 
 * **Analysis:** The message originates from a display name labeled `EDWARD GOMEZ` with the subject referencing an order document (`ORD-TUDGX0A21UHE1QCZX7Q`). The body contains short text urging the recipient to review the attached document and contact support at `+1 (656) 556-5065`.
 * **Key Finding:** The sender identity shows no affiliation with official Amazon corporate communication infrastructure.
 
-![Inbox View & Sender Inspection](img/01_phishing_email_inbox_header.png)
+![Inbox View & Sender Inspection]([img/01_phishing_email_inbox_header.png](https://github.com/adrianstevef-tech/Soc-Writeups/blob/849462db212ce987fcd678b2d3cc75d94d3e57e5/a49ce89f-ec5c-466e-bf05-bdd1987b1766.png))
 
 ---
 
