@@ -61,9 +61,9 @@ Forensic examination revealed a well-crafted social engineering message free of 
   * **Evasion Mechanism:** Threat actors configure edge servers to drop or reject requests originating from known security vendor IP ranges or headless crawler User-Agents.
   * **Security Vendor Consensus:** All 90 security engines flagged the URL as `Clean` due to the cloaked `404` response, demonstrating a zero-day evasion technique designed to bypass automated Secure Email Gateways (SEGs).
 
-![VirusTotal HTTP Transaction Log](img/02_virustotal_http_transaction_404.png)
+![VirusTotal HTTP Transaction Log](image_bf65fe.png)
 
-![VirusTotal Clean Vendor Detections](img/03_virustotal_clean_detections.png)
+![VirusTotal Clean Vendor Detections](image_bf6621.png)
 
 ---
 
@@ -74,7 +74,7 @@ Forensic examination revealed a well-crafted social engineering message free of 
   * **Domain Health Errors:** MXToolbox diagnostics revealed critical errors, including unresolvable HTTP host records (`http://chillhivecrest.info`), missing brand logos, and invalid SOA serial number formatting.
   * **Domain Hijacking / Rogue Relay:** The sub-domain `macallan.chillhivecrest.info` is used as an unauthorized outbound mail relay to send spoofed notifications without proper DMARC enforcement.
 
-![MXToolbox Domain Health Assessment](img/04_mxtoolbox_domain_health.png)
+![MXToolbox Domain Health Assessment](image_bf69de.jpg)
 
 ---
 
@@ -89,13 +89,13 @@ Forensic examination revealed a well-crafted social engineering message free of 
   * Direct HTTP request to `https://jmlongrun.net/354341` via the Tor network resulted in a standard `404 Not Found` server error page.
   * **Threat Intel Conclusion:** The threat infrastructure employs **Anti-Tor Cloaking / Exit Node Filtering**, explicitly dropping or spoofing 404 responses for requests originating from anonymized networks to evade SOC threat hunting.
 
-![Ubuntu Terminal Package Installation](img/05_ubuntu_tor_installation.png)
+![Ubuntu Terminal Package Installation](https://github.com/adrianstevef-tech/Soc-Writeups/blob/c0be112733e2f7fa6a20ab60359f9d10af6a414f/Screenshot%20From%202026-09-19%2011-25-07.png).  
 
-![Tor Browser Deployment & GPG Verification](img/06_tor_launcher_verification.png)
+![Tor Browser Deployment & GPG Verification](https://github.com/adrianstevef-tech/Soc-Writeups/blob/c0be112733e2f7fa6a20ab60359f9d10af6a414f/Screenshot%20From%202026-09-19%2011-29-10.png)
 
-![Tor Network Connection Verification](img/07_tor_check_exit_node.png)
+![Tor Network Connection Verification](https://github.com/adrianstevef-tech/Soc-Writeups/blob/c0be112733e2f7fa6a20ab60359f9d10af6a414f/Screenshot%20From%202026-09-19%2011-31-18.png)
 
-![Anti-Tor Evasion - 404 Response on Phishing URL](img/08_tor_phishing_404_response.png)
+![Anti-Tor Evasion - 404 Response on Phishing URL](https://github.com/adrianstevef-tech/Soc-Writeups/blob/c0be112733e2f7fa6a20ab60359f9d10af6a414f/Screenshot%20From%202026-09-19%2011-32-56.png)
 
 ---
 
