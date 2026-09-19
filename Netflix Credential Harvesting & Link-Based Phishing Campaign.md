@@ -49,7 +49,7 @@ Forensic examination revealed a well-crafted social engineering message free of 
   * **Linguistic Professionalism:** The message body is grammatically correct and persuasive (*"Update your payment method to avoid service disruption"*), significantly increasing the likelihood of user compliance compared to lower-quality scam templates.
   * **Dual Vector Delivery:** Features a primary CTA button (`Confirm Details`) pointing to `https://jmlongrun.net/354341`, alongside a secondary support phone line (`1-866-579-7172`).
 
-![Netflix Phishing Email Body](img/01_netflix_phishing_email_lure.png)
+![Netflix Phishing Email Body](image_bf6507.png)
 
 ---
 
